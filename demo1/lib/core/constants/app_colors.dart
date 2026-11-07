@@ -40,4 +40,7 @@ class AppColors {
   static const Color glassFill = Color(0x33FFFFFF);
   static const Color glassBorder = Color(0x66FFFFFF);
   static const Color glassHint = Color(0xB3FFFFFF); // ~70% សម្រាប់ placeholder
+
+  // new colors
+  static const Color scrim = Color(0x26000000); // ខ្មៅ ~15%
 }
