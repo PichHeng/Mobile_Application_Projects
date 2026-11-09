@@ -4,7 +4,9 @@ import 'package:demo1/core/constants/app_spacing.dart';
 import 'package:demo1/core/theme/app_text_styles.dart';
 import 'package:demo1/core/widgets/app_button.dart';
 import 'package:demo1/core/widgets/glass_text_field.dart';
+import 'package:demo1/features/auth/presentation/viewmodels/login_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -14,21 +16,47 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  final _usernameController = TextEditingController();
+  final _identifierController = TextEditingController();
   final _passwordController = TextEditingController();
-
-  // បណ្តោះអាសន្ន: មេរៀនទី ៤ នឹងផ្លាស់ទៅ ViewModel
-  bool _rememberMe = false;
 
   @override
   void dispose() {
-    _usernameController.dispose();
+    _identifierController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
 
+  Future<void> _onSignIn() async {
+    final vm = context.read<LoginViewModel>();
+    final ok = await vm.signIn(
+      identifier: _identifierController.text,
+      password: _passwordController.text,
+    );
+    if (!mounted) return;
+    if (ok) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Login success')));
+    }
+  }
+
+  String _errorText(LoginError error) {
+    switch (error) {
+      case LoginError.emptyIdentifier:
+        return 'Please enter your phone number or email';
+      case LoginError.passwordTooShort:
+        return 'Password must be at least 6 characters';
+      case LoginError.invalidCredentials:
+        return 'Wrong phone/email or password';
+      case LoginError.network:
+        return 'Something went wrong. Please try again';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final vm = context.watch<LoginViewModel>();
+
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -49,9 +77,9 @@ class _LoginViewState extends State<LoginView> {
                   ),
                   const SizedBox(height: AppSpacing.lg),
                   GlassTextField(
-                    hint: 'Enter your username',
+                    hint: 'Phone number or email',
                     icon: Icons.person_outline,
-                    controller: _usernameController,
+                    controller: _identifierController,
                   ),
                   const SizedBox(height: AppSpacing.fieldGap),
                   GlassTextField(
@@ -60,6 +88,15 @@ class _LoginViewState extends State<LoginView> {
                     controller: _passwordController,
                     isPassword: true,
                   ),
+                  if (vm.error != null) ...[
+                    const SizedBox(height: AppSpacing.sm),
+                    Text(
+                      _errorText(vm.error!),
+                      style: AppTextStyles.caption.copyWith(
+                        color: AppColors.error,
+                      ),
+                    ),
+                  ],
                   const SizedBox(height: AppSpacing.sm),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -69,9 +106,8 @@ class _LoginViewState extends State<LoginView> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Checkbox(
-                              value: _rememberMe,
-                              onChanged: (v) =>
-                                  setState(() => _rememberMe = v ?? false),
+                              value: vm.rememberMe,
+                              onChanged: (v) => vm.toggleRememberMe(v ?? false),
                               checkColor: AppColors.textOnButton,
                               fillColor: WidgetStateProperty.resolveWith(
                                 (states) =>
@@ -98,7 +134,9 @@ class _LoginViewState extends State<LoginView> {
                         ),
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          // TODO មេរៀនទី ៥: ទៅទំព័រ Sign Up
+                        },
                         child: const Text(
                           "don't have an account?",
                           style: AppTextStyles.link,
@@ -107,8 +145,22 @@ class _LoginViewState extends State<LoginView> {
                     ],
                   ),
                   const SizedBox(height: AppSpacing.xl),
-                  AppButton(label: 'Sign In', onPressed: () {}),
+                  AppButton(
+                    label: 'Sign In',
+                    isLoading: vm.isLoading,
+                    onPressed: _onSignIn,
+                  ),
                   const SizedBox(height: AppSpacing.lg),
+                  const SizedBox(
+                    width: double.infinity,
+                    child: Text(
+                      'I want to inform you all your privacy will be saved '
+                      'onto our database and we will provide you a safety '
+                      'use for this app',
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.caption,
+                    ),
+                  ),
                 ],
               ),
             ),

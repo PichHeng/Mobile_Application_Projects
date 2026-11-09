@@ -1,4 +1,5 @@
 import 'package:demo1/features/auth/data/repositories/auth_repository.dart';
+import 'package:demo1/features/auth/presentation/viewmodels/session_view_model.dart';
 import 'package:flutter/foundation.dart';
 
 enum LoginError {
@@ -9,9 +10,10 @@ enum LoginError {
 }
 
 class LoginViewModel extends ChangeNotifier {
-  LoginViewModel(this._repository);
+  LoginViewModel(this._repository, this._session);
 
   final AuthRepository _repository;
+  final SessionViewModel _session;
 
   bool _isLoading = false;
   bool _rememberMe = false;
@@ -47,10 +49,11 @@ class LoginViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      await _repository.signIn(
+      final user = await _repository.signIn(
         identifier: identifier.trim(),
         password: password,
       );
+      _session.setUser(user);
       return true;
     } on InvalidCredentialsException {
       _error = LoginError.invalidCredentials;

@@ -43,4 +43,17 @@ class AppColors {
 
   // new colors
   static const Color scrim = Color(0x26000000); // ខ្មៅ ~15%
+  static const Color error = Color(0xFFFFB4A9); // ក្រហមស្រាល អានបានលើរូបស្លឹកឈើ
+
+  // ===== Verdant (ទំព័រក្នុង app) =====
+  static const Color pageBackground = Color(0xFFF5F4EC);
+  static const Color cardSurface = Color(0xFFFFFDF7);
+  static const Color forestInk = Color(0xFF234E3F);
+  static const Color forestInkSoft = Color(0xFF233F34);
+  static const Color mintTint = Color(0xFFE6ECDD);
+  static const Color creamAlert = Color(0xFFF5EACF);
+  static const Color sage = Color(0xFF9FAF7D);
+
+  static const Color inkMuted = stoneGrey; // អក្សរប្រផេះ
+  static const Color warning = soilBrown; // ព្រមាន "Needs care"
 }
