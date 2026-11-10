@@ -8,18 +8,28 @@ class SectionHeader extends StatelessWidget {
     required this.title,
     this.actionLabel,
     this.onAction,
+    this.trailingText,
   });
 
   final String title;
   final String? actionLabel;
   final VoidCallback? onAction;
+  final String? trailingText;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Expanded(child: Text(title, style: AppType.section)),
-        if (actionLabel != null)
+        if (trailingText != null)
+          Text(
+            trailingText!,
+            style: AppType.caption.copyWith(
+              color: AppColors.primary,
+              fontWeight: FontWeight.w600,
+            ),
+          )
+        else if (actionLabel != null)
           TextButton(
             onPressed: onAction,
             style: TextButton.styleFrom(foregroundColor: AppColors.primary),

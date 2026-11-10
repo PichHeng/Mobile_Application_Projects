@@ -17,15 +17,30 @@ class FakeGreenhouseRepository implements GreenhouseRepository {
   @override
   Future<OverviewSummary> getOverview() async {
     await Future.delayed(const Duration(milliseconds: 400));
-    return const OverviewSummary(
+    return OverviewSummary(
       zoneCount: 3,
-      resources: ResourceSummary(
+      resources: const ResourceSummary(
         energyKwh: 18.4,
         energyChangeVsYesterday: -0.12,
         waterLitres: 246,
         waterAllowanceUsed: 0.77,
         fertilizerLitres: 1.8,
       ),
+      health: const PlanthealthSummary(healthy: 114, watch: 8, attention: 2),
+      roots: const RootsInsight(
+        soilTemperature: 20.8,
+        lowMoistureZone: 'Zone B',
+      ),
+      alerts: [
+        MoistureAlert(
+          zoneName: 'Zone B',
+          cropName: 'Tomato',
+          moisture: 28,
+          targetMin: 35,
+          targetMax: 50,
+          nextIrrigation: DateTime(2026, 6, 12, 10, 30),
+        ),
+      ],
     );
   }
 }

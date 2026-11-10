@@ -16,9 +16,82 @@ class ResourceSummary {
   final double fertilizerLitres;
 }
 
+class PlanthealthSummary {
+  const PlanthealthSummary({
+    required this.healthy,
+    required this.watch,
+    required this.attention,
+  });
+
+  final int healthy;
+  final int watch;
+  final int attention;
+
+  int get total => healthy + watch + attention;
+  int get healthyPercent => total == 0 ? 0 : (healthy / total * 100).round();
+}
+
+class RootsInsignt {
+  const RootsInsignt({required this.soilTemperature, this.lowMoistureZone});
+  final double soilTemperature;
+  // null មានន័យថាគ្មានតំបន់ណាខ្វះសំណើម
+  final String? lowMoistureZone;
+}
+
+class MoistureAlert {
+  const MoistureAlert({
+    required this.zoneName,
+    required this.cropName,
+    required this.moisture,
+    required this.targetMin,
+    required this.targetMax,
+    required this.nextIrrigation,
+  });
+  final String zoneName;
+  final String cropName;
+  final double moisture;
+  final double targetMin;
+  final double targetMax;
+  final DateTime nextIrrigation;
+}
+
+class PlantHealthSummary {
+  const PlantHealthSummary({
+    required this.healthy,
+    required this.watch,
+    required this.attention,
+  });
+
+  final int healthy;
+  final int watch;
+  final int attention;
+
+  int get total => healthy + watch + attention;
+
+  int get healthyPercent => total == 0 ? 0 : (healthy / total * 100).round();
+}
+
+class RootsInsight {
+  const RootsInsight({required this.soilTemperature, this.lowMoistureZone});
+
+  final double soilTemperature;
+
+  /// null មានន័យថាគ្មានតំបន់ណាខ្វះសំណើម
+  final String? lowMoistureZone;
+}
+
 class OverviewSummary {
-  const OverviewSummary({required this.zoneCount, required this.resources});
+  const OverviewSummary({
+    required this.zoneCount,
+    required this.resources,
+    required this.health,
+    required this.roots,
+    required this.alerts,
+  });
 
   final int zoneCount;
   final ResourceSummary resources;
+  final PlanthealthSummary health;
+  final RootsInsight roots;
+  final List<MoistureAlert> alerts;
 }

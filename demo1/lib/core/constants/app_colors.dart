@@ -56,4 +56,8 @@ class AppColors {
 
   static const Color inkMuted = stoneGrey; // អក្សរប្រផេះ
   static const Color warning = soilBrown; // ព្រមាន "Needs care"
+
+  static const Color healthHealthy = sage;
+  static const Color healthWatch = Color(0xFFC5D0CC); // Maybe
+  static const Color healthAttenstion = creamAlert;
 }

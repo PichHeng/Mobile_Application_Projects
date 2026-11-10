@@ -2,13 +2,18 @@ import 'package:demo1/core/constants/app_colors.dart';
 import 'package:demo1/core/constants/app_spacing.dart';
 import 'package:demo1/core/theme/app_type.dart';
 import 'package:demo1/core/utils/reading_format.dart';
+import 'package:demo1/core/widgets/alert_card.dart';
 import 'package:demo1/core/widgets/app_button.dart';
 import 'package:demo1/core/widgets/hero_card.dart';
+import 'package:demo1/core/widgets/insight_card.dart';
 import 'package:demo1/core/widgets/metric_card.dart';
+import 'package:demo1/core/widgets/readings_footer.dart';
 import 'package:demo1/core/widgets/section_header.dart';
 import 'package:demo1/features/auth/presentation/viewmodels/session_view_model.dart';
 import 'package:demo1/features/greenhouse/data/models/greenhouse_climate.dart';
+import 'package:demo1/features/greenhouse/data/models/overview_summary.dart';
 import 'package:demo1/features/overview/presentation/viewmodels/overview_view_model.dart';
+import 'package:demo1/features/overview/presentation/widgets/health_card.dart';
 import 'package:demo1/features/overview/presentation/widgets/resources_card.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -27,6 +32,23 @@ class OverviewView extends StatelessWidget {
     DayPart.afternoon => 'Good afternoon',
     DayPart.evening => 'Good evening',
   };
+
+  String _rootsSubtitle(RootsInsight roots) {
+    final temp = '${formatReading(roots.soilTemperature)} °C soil';
+    final zone = roots.lowMoistureZone;
+    return zone == null
+        ? '$temp · Moisture is on target'
+        : '$temp · $zone moisture is low';
+  }
+
+  String _alertMessage(MoistureAlert a) {
+    final target =
+        '${formatReading(a.targetMin)}–${formatReading(a.targetMax)}%';
+    final time = DateFormat('HH:mm').format(a.nextIrrigation);
+    return '${a.cropName} bed moisture is ${formatReading(a.moisture)}%, '
+        'below its $target target. '
+        'Check the drippers before the next cycle at $time.';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +103,45 @@ class OverviewView extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSpacing.md),
                   ResourcesCard(resources: summary.resources),
-                  // TODO មេរៀនទី ៩: health, roots, alert
+                  const SizedBox(height: AppSpacing.xl),
+                  SectionHeader(
+                    title: 'Growing well',
+                    actionLabel: 'Plants',
+                    onAction: () => context.go('/plants'),
+                  ),
+                  const SizedBox(height: AppSpacing.md),
+                  HealthCard(health: summary.health),
+                  const SizedBox(height: AppSpacing.md),
+                  InsightCard(
+                    icon: Icons.spa_outlined,
+                    title: 'At the roots',
+                    subtitle: _rootsSubtitle(summary.roots),
+                    onTap: () => context.go('/soil'),
+                  ),
+                  if (summary.alerts.isNotEmpty) ...[
+                    const SizedBox(height: AppSpacing.xl),
+                    SectionHeader(
+                      title: 'A little attention',
+                      trailingText: summary.alerts.length == 1
+                          ? '1 alert'
+                          : '${summary.alerts.length} alerts',
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+                    for (final alert in summary.alerts) ...[
+                      AlertCard(
+                        title: '${alert.zoneName} is getting thirsty',
+                        message: _alertMessage(alert),
+                        actionLabel: 'Review water & irrigation',
+                        onAction: () {
+                          // TODO មេរៀនក្រោយ: ទៅទំព័រ Water
+                        },
+                      ),
+                      const SizedBox(height: AppSpacing.md),
+                    ],
+                  ],
+                  const SizedBox(height: AppSpacing.lg),
+                  ReadingsFooter(time: vm.today),
+                  const SizedBox(height: AppSpacing.md),
                 ],
               ),
       ),
@@ -126,7 +186,7 @@ class _TopBar extends StatelessWidget {
       children: [
         const Icon(Icons.eco_outlined, color: AppColors.forestInk, size: 28),
         const SizedBox(width: AppSpacing.sm),
-        const Text('Farmer', style: AppType.brand),
+        const Text('PlantX', style: AppType.brand),
         const Spacer(),
         Container(
           width: 44,
