@@ -97,9 +97,7 @@ class OverviewView extends StatelessWidget {
                   SectionHeader(
                     title: "Today's resources",
                     actionLabel: 'Usage & controls',
-                    onAction: () {
-                      // TODO មេរៀនក្រោយ: ទៅទំព័រ Energy/Water/Fertilizer
-                    },
+                    onAction: () => context.go('/overview/resources/energy'),
                   ),
                   const SizedBox(height: AppSpacing.md),
                   ResourcesCard(resources: summary.resources),
@@ -132,9 +130,7 @@ class OverviewView extends StatelessWidget {
                         title: '${alert.zoneName} is getting thirsty',
                         message: _alertMessage(alert),
                         actionLabel: 'Review water & irrigation',
-                        onAction: () {
-                          // TODO មេរៀនក្រោយ: ទៅទំព័រ Water
-                        },
+                        onAction: () => context.go('/overview/resources/water'),
                       ),
                       const SizedBox(height: AppSpacing.md),
                     ],

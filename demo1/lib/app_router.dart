@@ -8,6 +8,8 @@ import 'package:demo1/features/greenhouse/data/repositories/greenhouse_repositor
 import 'package:demo1/features/overview/presentation/viewmodels/overview_view_model.dart';
 import 'package:demo1/features/overview/presentation/views/overview_view.dart';
 import 'package:demo1/features/plant_health/presentation/views/plant_health_view.dart';
+import 'package:demo1/features/resources/presentation/resource_type.dart';
+import 'package:demo1/features/resources/presentation/views/resources_view.dart';
 import 'package:demo1/features/shell/presentation/views/app_shell.dart';
 import 'package:demo1/features/soil/presentation/views/soil_view.dart';
 import 'package:flutter/material.dart';
@@ -53,6 +55,14 @@ GoRouter createRouter(SessionViewModel session) {
                         ..load(),
                   child: const OverviewView(),
                 ),
+                routes: [
+                  GoRoute(
+                    path: 'resources/:type',
+                    builder: (context, state) => ResourcesView(
+                      type: ResourceType.fromName(state.pathParameters['type']),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
