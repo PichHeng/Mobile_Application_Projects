@@ -18,9 +18,9 @@ import 'package:provider/provider.dart';
 class OverviewView extends StatelessWidget {
   const OverviewView({super.key});
 
-  // TODO: ពេល export រូបរួច ជំនួស null ដោយ
-  // AssetImage('assets/images/hero_greenhouse.jpg')
-  static const ImageProvider? _heroImage = null;
+  static const ImageProvider _heroImage = AssetImage(
+    'assets/images/hero_greenhouse.png',
+  );
 
   String _greeting(DayPart part) => switch (part) {
     DayPart.morning => 'Good morning',
@@ -126,7 +126,7 @@ class _TopBar extends StatelessWidget {
       children: [
         const Icon(Icons.eco_outlined, color: AppColors.forestInk, size: 28),
         const SizedBox(width: AppSpacing.sm),
-        const Text('verdant', style: AppType.brand),
+        const Text('Farmer', style: AppType.brand),
         const Spacer(),
         Container(
           width: 44,

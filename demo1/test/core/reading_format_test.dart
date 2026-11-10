@@ -9,6 +9,6 @@ void main() {
     expect(formatReading(24.6), '24.6');
   });
   test('thousands use a separator', () {
-    expect(formatReading(1000), '1, 000');
+    expect(formatReading(1000), '1,000');
   });
 }
