@@ -61,10 +61,10 @@ plant_tech/
 
 ### 1. Sign Up Screen
 
-![PlantX Sign Up Screen](docs/screenshots/signup-page.png)
+![PlantX Sign Up Screen](docs/screenshots/signuppage.png)
 
 ### 2. Dashboard Screen
 
-![PlantX Dashboard](docs/screenshots/dashboard.png)
+![PlantX Dashboard](docs/screenshots/Overview.png)
 
 
