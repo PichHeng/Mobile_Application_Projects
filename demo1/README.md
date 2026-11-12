@@ -26,7 +26,7 @@ plant_tech/
 │   ├── app.dart                   # MaterialApp, theme, router
 │   │
 │   ├── core/                      # របស់ដែលប្រើរួមគ្រប់ feature
-│   │   ├── constants/             # สี, ទំហំ, string keys
+│   │   ├── constants/             # ទំហំ, string keys
 │   │   ├── theme/                 # AppTheme, typography
 │   │   ├── router/                # route ទាំងអស់
 │   │   ├── network/               # HTTP client, error handling
