@@ -59,20 +59,12 @@ plant_tech/
 
 ## 📱 Application UI Preview
 
-### Sign Up Screen
+### 1. Sign Up Screen
 
-<p align="center">
-  <img src="docs/screenshots/signup-page.png"
-       width="280"
-       alt="PlantX Sign Up Screen"/>
-</p>
+![PlantX Sign Up Screen](docs/screenshots/signup-page.png)
 
-### Dashboard Screen
+### 2. Dashboard Screen
 
-<p align="center">
-  <img src="docs/screenshots/dashboard.png"
-       width="280"
-       alt="PlantX Dashboard Screen"/>
-</p>
+![PlantX Dashboard](docs/screenshots/dashboard.png)
 
 
