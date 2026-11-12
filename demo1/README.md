@@ -53,3 +53,26 @@ plant_tech/
 │
 ├── assets/ (images, fonts, icons)
 └── test/                          # រចនាសម្ព័ន្ធដូច lib/
+
+
+
+
+## 📱 Application UI Preview
+
+### Sign Up Screen
+
+<p align="center">
+  <img src="docs/screenshots/signup-page.png"
+       width="280"
+       alt="PlantX Sign Up Screen"/>
+</p>
+
+### Dashboard Screen
+
+<p align="center">
+  <img src="docs/screenshots/dashboard.png"
+       width="280"
+       alt="PlantX Dashboard Screen"/>
+</p>
+
+
