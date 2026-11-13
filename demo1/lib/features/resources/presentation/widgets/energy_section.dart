@@ -4,10 +4,13 @@ import 'package:demo1/core/constants/app_spacing.dart';
 import 'package:demo1/core/theme/app_type.dart';
 import 'package:demo1/core/utils/reading_format.dart';
 import 'package:demo1/core/widgets/app_button.dart';
+import 'package:demo1/core/widgets/budget_meter.dart';
+import 'package:demo1/core/widgets/delta_chip.dart';
 import 'package:demo1/core/widgets/pill_tabs.dart';
 import 'package:demo1/features/resources/data/models/usage_series.dart';
 import 'package:demo1/features/resources/data/repositories/resource_usage_repository.dart';
 import 'package:demo1/features/resources/presentation/viewmodels/energy_view_model.dart';
+import 'package:demo1/features/resources/presentation/widgets/usage_bar_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -39,10 +42,17 @@ class _EnergyBody extends StatelessWidget {
     UsagePeriod.month => 'vs previous 30 days',
   };
 
+  String _caption(UsagePeriod p) => switch (p) {
+    UsagePeriod.today => 'Hourly usage · last hour in progress',
+    UsagePeriod.week => 'Daily usage · today in progress',
+    UsagePeriod.month => 'Daily usage · last 30 days',
+  };
+
   @override
   Widget build(BuildContext context) {
     final vm = context.watch<EnergyViewModel>();
     final series = vm.series;
+    final budget = series?.budget;
 
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
@@ -80,64 +90,58 @@ class _EnergyBody extends StatelessWidget {
               ],
             )
           else if (series == null)
-            const Center(
-              child: Padding(
-                padding: EdgeInsets.all(AppSpacing.lg),
+            const SizedBox(
+              height: 260,
+              child: Center(
                 child: CircularProgressIndicator(color: AppColors.primary),
               ),
             )
           else ...[
             Row(
-              crossAxisAlignment: CrossAxisAlignment.baseline,
-              textBaseline: TextBaseline.alphabetic,
               children: [
-                Text(formatReading(series.total), style: AppType.metricValue),
-                const SizedBox(width: 6),
-                const Text('kWh', style: AppType.label),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.baseline,
+                  textBaseline: TextBaseline.alphabetic,
+                  children: [
+                    Text(
+                      formatReading(series.total),
+                      style: AppType.metricValue,
+                    ),
+                    const SizedBox(width: 6),
+                    const Text('kWh', style: AppType.label),
+                  ],
+                ),
+                const SizedBox(width: AppSpacing.md),
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: DeltaChip(
+                      change: series.changeVsPrevious,
+                      suffix: _comparison(vm.period),
+                    ),
+                  ),
+                ),
               ],
             ),
+            const SizedBox(height: AppSpacing.lg),
+            UsageBarChart(points: series.points),
             const SizedBox(height: AppSpacing.sm),
-            _ChangeText(
-              change: series.changeVsPrevious,
-              suffix: _comparison(vm.period),
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            Text('${series.points.length} data points', style: AppType.caption),
+            Text(_caption(vm.period), style: AppType.caption),
+            if (budget != null) ...[
+              const SizedBox(height: AppSpacing.md),
+              const Divider(color: AppColors.mintTint, height: 1),
+              const SizedBox(height: AppSpacing.md),
+              BudgetMeter(
+                title: 'Daily budget',
+                used: series.total,
+                budget: budget,
+                unit: 'kWh',
+              ),
+            ],
           ],
         ],
       ),
-    );
-  }
-}
-
-class _ChangeText extends StatelessWidget {
-  const _ChangeText({required this.change, required this.suffix});
-
-  final double change;
-  final String suffix;
-
-  @override
-  Widget build(BuildContext context) {
-    final percent = (change.abs() * 100).round();
-    final text = percent == 0 ? 'No change $suffix' : '$percent% $suffix';
-
-    return Row(
-      children: [
-        if (percent != 0)
-          Icon(
-            change < 0 ? Icons.arrow_downward : Icons.arrow_upward,
-            size: 14,
-            color: AppColors.primary,
-          ),
-        if (percent != 0) const SizedBox(width: 4),
-        Text(
-          text,
-          style: AppType.caption.copyWith(
-            color: AppColors.primary,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ],
     );
   }
 }
