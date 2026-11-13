@@ -4,6 +4,7 @@ import 'package:demo1/core/constants/app_spacing.dart';
 import 'package:demo1/core/theme/app_type.dart';
 import 'package:demo1/core/widgets/pill_tabs.dart';
 import 'package:demo1/features/resources/presentation/resource_type.dart';
+import 'package:demo1/features/resources/presentation/widgets/energy_section.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -43,7 +44,10 @@ class ResourcesView extends StatelessWidget {
               ),
             ),
             const SizedBox(height: AppSpacing.lg),
-            _ComingSoon(type: type),
+            if (type == ResourceType.energy)
+              const EnergySection()
+            else
+              _ComingSoon(type: type),
           ],
         ),
       ),
