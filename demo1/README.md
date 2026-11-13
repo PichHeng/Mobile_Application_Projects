@@ -63,8 +63,32 @@ plant_tech/
 
 ![PlantX Sign Up Screen](docs/screenshots/signuppage.png)
 
-### 2. Dashboard Screen
+### 2. Overview Screen
 
 ![PlantX Dashboard](docs/screenshots/Overview.png)
 
+### 3. Climate
+
+<p align="center">
+  <img src="docs/screenshots/climate.png"
+       width="280"
+       alt="PlantX Climate Screen"/>
+</p>
+
+### 4. Soil
+
+<p align="center">
+  <img src="docs/screenshots/soil.png"
+       width="280"
+       alt="PlantX Soil Screen"/>
+</p>
+
+
+### Plants
+
+<p align="center">
+  <img src="docs/screenshots/plants.png"
+       width="280"
+       alt="PlantX Plants Screen"/>
+</p>
 
