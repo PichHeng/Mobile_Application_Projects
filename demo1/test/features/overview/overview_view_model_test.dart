@@ -33,7 +33,7 @@ class _StubRepository implements GreenhouseRepository {
         waterAllowanceUsed: 0.77,
         fertilizerLitres: 1.8,
       ),
-      health: PlanthealthSummary(healthy: 114, watch: 8, attention: 2),
+      health: PlantHealthSummary(healthy: 114, watch: 8, attention: 2),
       roots: RootsInsight(soilTemperature: 20.8),
       alerts: [],
     );

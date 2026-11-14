@@ -16,8 +16,8 @@ class ResourceSummary {
   final double fertilizerLitres;
 }
 
-class PlanthealthSummary {
-  const PlanthealthSummary({
+class PlantHealthSummary {
+  const PlantHealthSummary({
     required this.healthy,
     required this.watch,
     required this.attention,
@@ -28,6 +28,7 @@ class PlanthealthSummary {
   final int attention;
 
   int get total => healthy + watch + attention;
+
   int get healthyPercent => total == 0 ? 0 : (healthy / total * 100).round();
 }
 
@@ -55,22 +56,6 @@ class MoistureAlert {
   final DateTime nextIrrigation;
 }
 
-class PlantHealthSummary {
-  const PlantHealthSummary({
-    required this.healthy,
-    required this.watch,
-    required this.attention,
-  });
-
-  final int healthy;
-  final int watch;
-  final int attention;
-
-  int get total => healthy + watch + attention;
-
-  int get healthyPercent => total == 0 ? 0 : (healthy / total * 100).round();
-}
-
 class RootsInsight {
   const RootsInsight({required this.soilTemperature, this.lowMoistureZone});
 
@@ -91,7 +76,7 @@ class OverviewSummary {
 
   final int zoneCount;
   final ResourceSummary resources;
-  final PlanthealthSummary health;
+  final PlantHealthSummary health;
   final RootsInsight roots;
   final List<MoistureAlert> alerts;
 }

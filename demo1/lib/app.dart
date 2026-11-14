@@ -51,7 +51,7 @@ class _AppState extends State<App> {
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
-        title: 'Plant-Tech',
+        title: 'Plant-Care',
         theme: AppTheme.light,
         routerConfig: _router,
       ),

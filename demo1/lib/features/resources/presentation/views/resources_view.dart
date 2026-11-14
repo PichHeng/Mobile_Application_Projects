@@ -5,6 +5,7 @@ import 'package:demo1/core/theme/app_type.dart';
 import 'package:demo1/core/widgets/pill_tabs.dart';
 import 'package:demo1/features/resources/presentation/resource_type.dart';
 import 'package:demo1/features/resources/presentation/widgets/energy_section.dart';
+import 'package:demo1/features/resources/presentation/widgets/water_section.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -44,10 +45,12 @@ class ResourcesView extends StatelessWidget {
               ),
             ),
             const SizedBox(height: AppSpacing.lg),
-            if (type == ResourceType.energy)
-              const EnergySection()
-            else
-              _ComingSoon(type: type),
+
+            switch (type) {
+              ResourceType.energy => const EnergySection(),
+              ResourceType.water => const WaterSection(),
+              ResourceType.fertilizer => _ComingSoon(type: type),
+            },
           ],
         ),
       ),

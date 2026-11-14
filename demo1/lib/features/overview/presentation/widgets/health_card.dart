@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 
 class HealthCard extends StatelessWidget {
   const HealthCard({super.key, required this.health});
-  final PlanthealthSummary health;
+  final PlantHealthSummary health;
 
   @override
   Widget build(BuildContext context) {

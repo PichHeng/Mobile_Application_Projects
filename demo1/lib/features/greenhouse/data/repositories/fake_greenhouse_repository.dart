@@ -1,3 +1,5 @@
+import 'package:demo1/features/greenhouse/data/mock/mock_energy.dart';
+import 'package:demo1/features/greenhouse/data/mock/mock_water.dart';
 import 'package:demo1/features/greenhouse/data/models/greenhouse_climate.dart';
 import 'package:demo1/features/greenhouse/data/models/overview_summary.dart';
 import 'package:demo1/features/greenhouse/data/repositories/greenhouse_repository.dart';
@@ -17,16 +19,27 @@ class FakeGreenhouseRepository implements GreenhouseRepository {
   @override
   Future<OverviewSummary> getOverview() async {
     await Future.delayed(const Duration(milliseconds: 400));
+
+    final energyToday = mockEnergyTodayHourly.fold<double>(
+      0,
+      (sum, v) => sum + v,
+    );
+    final waterToday = mockWaterTodayHourly.fold<double>(
+      0,
+      (sum, v) => sum + v,
+    );
+
     return OverviewSummary(
       zoneCount: 3,
-      resources: const ResourceSummary(
-        energyKwh: 18.4,
-        energyChangeVsYesterday: -0.12,
-        waterLitres: 246,
-        waterAllowanceUsed: 0.77,
+      resources: ResourceSummary(
+        energyKwh: energyToday,
+        energyChangeVsYesterday:
+            (energyToday - mockEnergyYesterday) / mockEnergyYesterday,
+        waterLitres: waterToday,
+        waterAllowanceUsed: waterToday / mockWaterAllowance,
         fertilizerLitres: 1.8,
       ),
-      health: const PlanthealthSummary(healthy: 114, watch: 8, attention: 2),
+      health: const PlantHealthSummary(healthy: 114, watch: 8, attention: 2),
       roots: const RootsInsight(
         soilTemperature: 20.8,
         lowMoistureZone: 'Zone B',

@@ -9,7 +9,9 @@ import 'package:demo1/core/widgets/delta_chip.dart';
 import 'package:demo1/core/widgets/pill_tabs.dart';
 import 'package:demo1/features/resources/data/models/usage_series.dart';
 import 'package:demo1/features/resources/data/repositories/resource_usage_repository.dart';
+import 'package:demo1/features/resources/presentation/usage_labels.dart';
 import 'package:demo1/features/resources/presentation/viewmodels/energy_view_model.dart';
+import 'package:demo1/features/resources/presentation/widgets/energy_details.dart';
 import 'package:demo1/features/resources/presentation/widgets/usage_bar_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +24,7 @@ class EnergySection extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (ctx) =>
           EnergyViewModel(ctx.read<ResourceUsageRepository>())..load(),
-      child: const _EnergyBody(),
+      child: const Column(children: [_EnergyBody(), EnergyDetails()]),
     );
   }
 }
@@ -35,12 +37,6 @@ class _EnergyBody extends StatelessWidget {
     UsagePeriod.week,
     UsagePeriod.month,
   ];
-
-  String _comparison(UsagePeriod p) => switch (p) {
-    UsagePeriod.today => 'vs yesterday',
-    UsagePeriod.week => 'vs previous 7 days',
-    UsagePeriod.month => 'vs previous 30 days',
-  };
 
   String _caption(UsagePeriod p) => switch (p) {
     UsagePeriod.today => 'Hourly usage · last hour in progress',
@@ -118,7 +114,7 @@ class _EnergyBody extends StatelessWidget {
                     alignment: Alignment.centerRight,
                     child: DeltaChip(
                       change: series.changeVsPrevious,
-                      suffix: _comparison(vm.period),
+                      suffix: comparisonLabel(vm.period),
                     ),
                   ),
                 ),
