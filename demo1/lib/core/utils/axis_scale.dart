@@ -31,3 +31,6 @@ AxisScale niceScale(double maxValue, {int intervals = 2}) {
   final step = nice * magnitude;
   return AxisScale(max: step * intervals, step: step);
 }
+
+/// បង្ហាញ label រៀងរាល់ប៉ុន្មានចំណុច ដើម្បីឪ្យមានប្រហែល 4 label
+int axisLabelStep(int count) => math.max(1, (count / 4)).ceil();

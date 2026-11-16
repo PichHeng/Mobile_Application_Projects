@@ -12,6 +12,7 @@ import 'package:demo1/features/resources/data/models/water_report.dart';
 import 'package:demo1/features/resources/data/repositories/resource_usage_repository.dart';
 import 'package:demo1/features/resources/presentation/usage_labels.dart';
 import 'package:demo1/features/resources/presentation/viewmodels/water_view_model.dart';
+import 'package:demo1/features/resources/presentation/widgets/usage_line_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -124,18 +125,19 @@ class _UsageCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: AppSpacing.lg),
-            Container(
-              height: 120,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: AppColors.mintTint,
-                borderRadius: BorderRadius.circular(AppRadius.small),
-              ),
-              child: const Text(
-                'Chart arrives in the next lesson',
-                style: AppType.caption,
-              ),
-            ),
+            // Container(
+            //   height: 120,
+            //   alignment: Alignment.center,
+            //   decoration: BoxDecoration(
+            //     color: AppColors.mintTint,
+            //     borderRadius: BorderRadius.circular(AppRadius.small),
+            //   ),
+            //   child: const Text(
+            //     'Chart arrives in the next lesson',
+            //     style: AppType.caption,
+            //   ),
+            // ),
+            UsageLineChart(points: series.cumulativePoints),
             const SizedBox(height: AppSpacing.sm),
             Text(
               left == null

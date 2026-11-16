@@ -22,6 +22,18 @@ class UsageSeries {
   /// null​ មានន័យថារយៈពេលគ្មានថវិកា (មានតែ "Today")
   final double? budget;
   double get total => points.fold<double>(0, (sum, p) => sum + p.value);
+
+  /// ចំណុចបូកបន្ត: [1, 2, 3] -> [1, 3, 6] ដោយរក្សាស្លាកដើម
+  List<UsagePoint> get cumulativePoints {
+    final result = <UsagePoint>[];
+    var running = 0.0;
+    for (final p in points) {
+      running += p.value;
+      result.add(UsagePoint(p.label, running));
+    }
+    return result;
+  }
+
   /// -0.22 មានន័យថាតិចជាង ១២% ធៀបនឹងរយះពេលមុន
   double get changeVsPrevious =>
       previousTotal == 0 ? 0 : (total - previousTotal) / previousTotal;

@@ -25,7 +25,8 @@ class UsageBarChart extends StatelessWidget {
 
     final maxValue = points.map((p) => p.value).reduce(math.max);
     final scale = niceScale(maxValue);
-    final labelEvery = math.max(1, (points.length / 4).ceil());
+    // final labelEvery = math.max(1, (points.length / 4).ceil());
+    final labelEvery = axisLabelStep(points.length);
     final lastIndex = points.length - 1;
     final barWidth = points.length > 14 ? 5.0 : 14.0;
     return SizedBox(
