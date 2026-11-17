@@ -12,19 +12,50 @@ import 'package:demo1/features/resources/data/models/water_report.dart';
 import 'package:demo1/features/resources/data/repositories/resource_usage_repository.dart';
 import 'package:demo1/features/resources/presentation/usage_labels.dart';
 import 'package:demo1/features/resources/presentation/viewmodels/water_view_model.dart';
+import 'package:demo1/features/resources/data/repositories/irrigation_repository.dart';
+import 'package:demo1/features/resources/presentation/viewmodels/water_controls_view_model.dart';
+import 'package:demo1/features/resources/presentation/widgets/water_io_section.dart';
 import 'package:demo1/features/resources/presentation/widgets/usage_line_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+// class WaterSection extends StatelessWidget {
+//   const WaterSection({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return ChangeNotifierProvider(
+//       create: (ctx) =>
+//           WaterViewModel(ctx.read<ResourceUsageRepository>())..load(),
+//       child: const Column(children: [_UsageCard(), _ZonesSection()]),
+//     );
+//   }
+// }
 
 class WaterSection extends StatelessWidget {
   const WaterSection({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (ctx) =>
-          WaterViewModel(ctx.read<ResourceUsageRepository>())..load(),
-      child: const Column(children: [_UsageCard(), _ZonesSection()]),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (ctx) =>
+              WaterViewModel(ctx.read<ResourceUsageRepository>())..load(),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) =>
+              WaterControlsViewModel(ctx.read<IrrigationRepository>())..load(),
+        ),
+      ],
+      child: const Column(
+        children: [
+          _UsageCard(),
+          _ZonesSection(),
+          WaterInputsSection(),
+          WaterOutputsSection(),
+        ],
+      ),
     );
   }
 }

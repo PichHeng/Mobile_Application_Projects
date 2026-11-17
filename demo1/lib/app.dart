@@ -7,6 +7,8 @@ import 'package:demo1/features/greenhouse/data/repositories/fake_greenhouse_repo
 import 'package:demo1/features/greenhouse/data/repositories/greenhouse_repository.dart';
 import 'package:demo1/features/resources/data/repositories/fake_resource_usage_repository.dart';
 import 'package:demo1/features/resources/data/repositories/resource_usage_repository.dart';
+import 'package:demo1/features/resources/data/repositories/fake_irrigation_repository.dart';
+import 'package:demo1/features/resources/data/repositories/irrigation_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -47,6 +49,9 @@ class _AppState extends State<App> {
         ),
         Provider<ResourceUsageRepository>(
           create: (_) => FakeResourceUsageRepository(),
+        ),
+        Provider<IrrigationRepository>(
+          create: (_) => FakeIrrigationRepository(),
         ),
       ],
       child: MaterialApp.router(
