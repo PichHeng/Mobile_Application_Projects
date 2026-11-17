@@ -1,3 +1,5 @@
+import 'package:demo1/features/resources/data/models/irrigation_schedule.dart';
+
 class WaterInputs {
   const WaterInputs({
     required this.reservoirLitres,
@@ -40,7 +42,12 @@ class OutputDef {
 }
 
 class IrrigationSnapshot {
-  const IrrigationSnapshot({required this.inputs, required this.outputs});
+  const IrrigationSnapshot({
+    required this.inputs,
+    required this.outputs,
+    this.schedule = const IrrigationSchedule([]),
+  });
   final WaterInputs inputs;
   final List<OutputDef> outputs;
+  final IrrigationSchedule schedule;
 }

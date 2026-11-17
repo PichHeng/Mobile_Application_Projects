@@ -16,6 +16,7 @@ import 'package:demo1/features/resources/data/repositories/irrigation_repository
 import 'package:demo1/features/resources/presentation/viewmodels/water_controls_view_model.dart';
 import 'package:demo1/features/resources/presentation/widgets/water_io_section.dart';
 import 'package:demo1/features/resources/presentation/widgets/usage_line_chart.dart';
+import 'package:demo1/features/resources/presentation/widgets/water_schedule_section.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -54,6 +55,7 @@ class WaterSection extends StatelessWidget {
           _ZonesSection(),
           WaterInputsSection(),
           WaterOutputsSection(),
+          WaterScheduleSection(),
         ],
       ),
     );

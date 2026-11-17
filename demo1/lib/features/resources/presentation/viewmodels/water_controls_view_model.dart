@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:demo1/features/resources/data/models/irrigation_schedule.dart';
 import 'package:demo1/features/resources/data/models/water_io.dart';
 import 'package:demo1/features/resources/data/models/water_report.dart';
 import 'package:demo1/features/resources/data/repositories/irrigation_repository.dart';
@@ -12,10 +13,13 @@ class WaterControlsViewModel extends ChangeNotifier {
     this.limits = const SafetyLimits(),
     this.testLimit = const Duration(minutes: 2),
     Timer Function(Duration, void Function())? scheduler,
-  }) : _schedule = scheduler ?? Timer.new;
+    DateTime Function()? clock,
+  }) : _startTimer = scheduler ?? Timer.new,
+       _clock = clock ?? DateTime.now;
 
   final IrrigationRepository _repository;
-  final Timer Function(Duration, void Function()) _schedule;
+  final Timer Function(Duration, void Function()) _startTimer;
+  final DateTime Function() _clock;
   final SafetyLimits limits;
   final Duration testLimit;
 
@@ -32,6 +36,11 @@ class WaterControlsViewModel extends ChangeNotifier {
   ReportError? get error => _error;
   WaterInputs? get inputs => _snapshot?.inputs;
   List<OutputDef> get outputs => _snapshot?.outputs ?? const [];
+
+  DateTime get now => _clock();
+
+  List<UpcomingCycle> get upcomingCycles =>
+      _snapshot?.schedule.upcoming(_clock()) ?? const [];
 
   IrrigationMode modeOf(String id) => _modes[id] ?? IrrigationMode.auto;
 
@@ -81,7 +90,7 @@ class WaterControlsViewModel extends ChangeNotifier {
   void startTest() {
     if (!canStartTest) return;
     _isRunning = true;
-    _timer = _schedule(testLimit, stopTest);
+    _timer = _startTimer(testLimit, stopTest);
     notifyListeners();
   }
 
