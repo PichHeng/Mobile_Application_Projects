@@ -17,7 +17,7 @@ class UsageCard extends StatelessWidget {
     super.key,
     required this.title,
     required this.period,
-    required this.onPeriodChange,
+    required this.onPeriodChanged,
     required this.series,
     required this.hasError,
     required this.onRetry,
@@ -30,7 +30,7 @@ class UsageCard extends StatelessWidget {
   });
   final String title;
   final UsagePeriod period;
-  final ValueChanged<UsagePeriod> onPeriodChange;
+  final ValueChanged<UsagePeriod> onPeriodChanged;
 
   /// null មានន័យថាកំពុងផ្ទុក
   final UsageSeries? series;
@@ -74,7 +74,7 @@ class UsageCard extends StatelessWidget {
                   compact: true,
                   labels: const ['Today', '7 days', 'Month'],
                   selectedIndex: _periods.indexOf(period),
-                  onChanged: (i) => onPeriodChange(_periods[i]),
+                  onChanged: (i) => onPeriodChanged(_periods[i]),
                 ),
               ),
             ],
@@ -86,7 +86,7 @@ class UsageCard extends StatelessWidget {
               children: [
                 const Text('Could not load data', style: AppType.bodyStrong),
                 const SizedBox(height: AppSpacing.md),
-                AppButton(label: 'Try Again', onPressed: onRetry),
+                AppButton(label: 'Try again', onPressed: onRetry),
               ],
             )
           else if (data == null)

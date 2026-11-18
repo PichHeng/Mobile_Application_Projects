@@ -23,7 +23,7 @@ Widget _card({
         child: UsageCard(
           title: 'Test usage',
           period: UsagePeriod.today,
-          onPeriodChange: onPeriodChanged ?? (_) {},
+          onPeriodChanged: onPeriodChanged ?? (_) {},
           series: series,
           hasError: hasError,
           onRetry: onRetry ?? () {},

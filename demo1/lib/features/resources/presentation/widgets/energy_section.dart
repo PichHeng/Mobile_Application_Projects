@@ -41,7 +41,7 @@ class _EnergyUsageCard extends StatelessWidget {
     return UsageCard(
       title: 'Electricity consumed',
       period: vm.period,
-      onPeriodChange: vm.selectPeriod,
+      onPeriodChanged: vm.selectPeriod,
       series: vm.series,
       hasError: vm.error != null,
       onRetry: vm.load,

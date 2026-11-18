@@ -37,7 +37,7 @@ class WaterInputsSection extends StatelessWidget {
           children: [
             const Text('Could not read sensors', style: AppType.bodyStrong),
             const SizedBox(height: AppSpacing.md),
-            AppButton(label: 'Try Again', onPressed: () => vm.load()),
+            AppButton(label: 'Try again', onPressed: () => vm.load()),
           ],
         ),
       );

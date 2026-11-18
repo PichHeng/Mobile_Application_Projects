@@ -65,7 +65,7 @@ class _WaterUsageCard extends StatelessWidget {
     return UsageCard(
       title: 'Water used',
       period: vm.period,
-      onPeriodChange: vm.selectPeriod,
+      onPeriodChanged: vm.selectPeriod,
       series: vm.series,
       hasError: vm.error != null,
       onRetry: vm.load,

@@ -9,6 +9,8 @@ import 'package:demo1/features/resources/data/repositories/fake_resource_usage_r
 import 'package:demo1/features/resources/data/repositories/resource_usage_repository.dart';
 import 'package:demo1/features/resources/data/repositories/fake_irrigation_repository.dart';
 import 'package:demo1/features/resources/data/repositories/irrigation_repository.dart';
+import 'package:demo1/features/resources/data/repositories/dosing_repository.dart';
+import 'package:demo1/features/resources/data/repositories/fake_dosing_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -53,6 +55,7 @@ class _AppState extends State<App> {
         Provider<IrrigationRepository>(
           create: (_) => FakeIrrigationRepository(),
         ),
+        Provider<DosingRepository>(create: (_) => FakeDosingRepository()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

@@ -3,8 +3,11 @@ import 'package:demo1/core/theme/app_type.dart';
 import 'package:demo1/core/utils/reading_format.dart';
 import 'package:demo1/features/resources/data/models/fertilizer_report.dart';
 import 'package:demo1/features/resources/data/models/usage_series.dart';
+import 'package:demo1/features/resources/data/repositories/dosing_repository.dart';
 import 'package:demo1/features/resources/data/repositories/resource_usage_repository.dart';
+import 'package:demo1/features/resources/presentation/viewmodels/dosing_view_model.dart';
 import 'package:demo1/features/resources/presentation/viewmodels/fertilizer_view_model.dart';
+import 'package:demo1/features/resources/presentation/widgets/fertilizer_dosing_sections.dart';
 import 'package:demo1/features/resources/presentation/widgets/usage_card.dart';
 import 'package:demo1/features/resources/presentation/widgets/usage_line_chart.dart';
 import 'package:flutter/material.dart';
@@ -15,15 +18,18 @@ class FertilizerSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (ctx) =>
-          FertilizerViewModel(ctx.read<ResourceUsageRepository>())..load(),
-      child: const Column(
-        children: [
-          _FertilizerUsageCard(),
-          // TODO មេរៀនទី ១៩: Today's recipe, Inputs
-        ],
-      ),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (ctx) =>
+              FertilizerViewModel(ctx.read<ResourceUsageRepository>())..load(),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) =>
+              DosingViewModel(ctx.read<DosingRepository>())..load(),
+        ),
+      ],
+      child: const Column(children: [_FertilizerUsageCard(), DosingSections()]),
     );
   }
 }
@@ -54,7 +60,7 @@ class _FertilizerUsageCard extends StatelessWidget {
     return UsageCard(
       title: 'Concentrate used',
       period: vm.period,
-      onPeriodChange: vm.selectPeriod,
+      onPeriodChanged: vm.selectPeriod,
       series: vm.series,
       hasError: vm.error != null,
       onRetry: vm.load,

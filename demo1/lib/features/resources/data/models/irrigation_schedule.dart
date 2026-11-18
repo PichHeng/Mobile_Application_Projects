@@ -1,3 +1,5 @@
+import 'package:demo1/features/resources/data/models/daily_time.dart';
+
 class ScheduledCycle {
   const ScheduledCycle({
     required this.zoneName,
@@ -19,11 +21,8 @@ class ScheduledCycle {
 
   /// លើកបន្ទាប់ដែលវាដំណើរការ (រៀងរាល់ថ្ងៃ)។
   /// ស្មើពេលបច្ចុប្បន្នពិតប្រាកដ ចាត់ថាបានចាប់ផ្តើមហើយ ដូច្នេះទៅថ្ងៃស្អែក។
-  DateTime nextRun(DateTime now) {
-    final today = DateTime(now.year, now.month, now.day, hour, minute);
-    if (today.isAfter(now)) return today;
-    return DateTime(now.year, now.month, now.day + 1, hour, minute);
-  }
+
+  DateTime nextRun(DateTime now) => DailyTime(hour, minute).nextOccurrence(now);
 }
 
 class UpcomingCycle {
