@@ -1,6 +1,8 @@
 import 'package:demo1/features/greenhouse/data/mock/mock_energy.dart';
+import 'package:demo1/features/greenhouse/data/mock/mock_fertilizer.dart';
 import 'package:demo1/features/greenhouse/data/mock/mock_water.dart';
 import 'package:demo1/features/resources/data/models/energy_report.dart';
+import 'package:demo1/features/resources/data/models/fertilizer_report.dart';
 import 'package:demo1/features/resources/data/models/usage_series.dart';
 import 'package:demo1/features/resources/data/models/water_report.dart';
 import 'package:demo1/features/resources/data/repositories/resource_usage_repository.dart';
@@ -132,7 +134,45 @@ class FakeResourceUsageRepository implements ResourceUsageRepository {
     ];
   }
 
+  // Fertilizer
+  @override
+  Future<FertilizerReport> getFertillizer(UsagePeriod period) async {
+    await Future.delayed(const Duration(milliseconds: 300));
+    final todayTotal = _sum(mockFertillizerTodayHourly);
+    return switch (period) {
+      UsagePeriod.today => FertilizerReport(
+        series: UsageSeries(
+          points: _hourly(mockFertillizerTodayHourly),
+          previousTotal: 3.6,
+        ),
+        plannedLitres: mockFertillizerPlannedSoFar,
+        mixPreparedLitres: 450,
+      ),
+      UsagePeriod.week => FertilizerReport(
+        series: UsageSeries(
+          points: _weekdays([3.9, 4.2, 4.0, 4.4, 3.8, 4.1, todayTotal]),
+          previousTotal: 28.5,
+        ),
+        plannedLitres: 26,
+        mixPreparedLitres: 3000,
+      ),
+      UsagePeriod.month => FertilizerReport(
+        series: UsageSeries(
+          points: [
+            for (var i = 0; i < 30; i++)
+              UsagePoint('${i + 1}', 3.6 + (i % 5) * 0.2),
+          ],
+          previousTotal: 112,
+        ),
+        plannedLitres: 118,
+        mixPreparedLitres: 13500,
+      ),
+    };
+  }
+
   // ===== ជំនួយរួម =====
+  double _sum(List<double> values) =>
+      values.fold<double>(0, (sum, v) => sum + v);
 
   List<UsagePoint> _hourly(List<double> values) => [
     for (var i = 0; i < values.length; i++)

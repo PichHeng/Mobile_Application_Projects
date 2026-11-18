@@ -3,35 +3,22 @@ import 'package:demo1/core/constants/app_radius.dart';
 import 'package:demo1/core/constants/app_spacing.dart';
 import 'package:demo1/core/theme/app_type.dart';
 import 'package:demo1/core/utils/reading_format.dart';
-import 'package:demo1/core/widgets/app_button.dart';
 import 'package:demo1/core/widgets/delta_chip.dart';
-import 'package:demo1/core/widgets/pill_tabs.dart';
 import 'package:demo1/core/widgets/section_header.dart';
 import 'package:demo1/features/resources/data/models/usage_series.dart';
 import 'package:demo1/features/resources/data/models/water_report.dart';
+import 'package:demo1/features/resources/data/repositories/irrigation_repository.dart';
 import 'package:demo1/features/resources/data/repositories/resource_usage_repository.dart';
 import 'package:demo1/features/resources/presentation/usage_labels.dart';
-import 'package:demo1/features/resources/presentation/viewmodels/water_view_model.dart';
-import 'package:demo1/features/resources/data/repositories/irrigation_repository.dart';
 import 'package:demo1/features/resources/presentation/viewmodels/water_controls_view_model.dart';
-import 'package:demo1/features/resources/presentation/widgets/water_io_section.dart';
+import 'package:demo1/features/resources/presentation/viewmodels/water_view_model.dart';
+import 'package:demo1/features/resources/presentation/widgets/usage_card.dart';
 import 'package:demo1/features/resources/presentation/widgets/usage_line_chart.dart';
+import 'package:demo1/features/resources/presentation/widgets/water_io_section.dart';
+// import 'package:demo1/features/resources/presentation/widgets/water_io_section.dart';
 import 'package:demo1/features/resources/presentation/widgets/water_schedule_section.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-// class WaterSection extends StatelessWidget {
-//   const WaterSection({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return ChangeNotifierProvider(
-//       create: (ctx) =>
-//           WaterViewModel(ctx.read<ResourceUsageRepository>())..load(),
-//       child: const Column(children: [_UsageCard(), _ZonesSection()]),
-//     );
-//   }
-// }
 
 class WaterSection extends StatelessWidget {
   const WaterSection({super.key});
@@ -51,7 +38,7 @@ class WaterSection extends StatelessWidget {
       ],
       child: const Column(
         children: [
-          _UsageCard(),
+          _WaterUsageCard(),
           _ZonesSection(),
           WaterInputsSection(),
           WaterOutputsSection(),
@@ -62,14 +49,8 @@ class WaterSection extends StatelessWidget {
   }
 }
 
-class _UsageCard extends StatelessWidget {
-  const _UsageCard();
-
-  static const _periods = [
-    UsagePeriod.today,
-    UsagePeriod.week,
-    UsagePeriod.month,
-  ];
+class _WaterUsageCard extends StatelessWidget {
+  const _WaterUsageCard();
 
   String _unit(UsagePeriod p) => switch (p) {
     UsagePeriod.today => 'L today',
@@ -80,108 +61,27 @@ class _UsageCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final vm = context.watch<WaterViewModel>();
-    final series = vm.series;
-    final left = series?.budgetRemaining;
 
-    return Container(
-      padding: const EdgeInsets.all(AppSpacing.md),
-      decoration: BoxDecoration(
-        color: AppColors.cardSurface,
-        borderRadius: BorderRadius.circular(AppRadius.card),
+    return UsageCard(
+      title: 'Water used',
+      period: vm.period,
+      onPeriodChange: vm.selectPeriod,
+      series: vm.series,
+      hasError: vm.error != null,
+      onRetry: vm.load,
+      unit: _unit(vm.period),
+      loadingHeight: 200,
+      chartBuilder: (s) => UsageLineChart(points: s.cumulativePoints),
+      trailingBuilder: (s) => DeltaChip(
+        change: s.changeVsPrevious,
+        suffix: comparisonLabel(vm.period),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Expanded(
-                child: Text('Water used', style: AppType.bodyStrong),
-              ),
-              SizedBox(
-                width: 210,
-                child: PillTabs(
-                  compact: true,
-                  labels: const ['Today', '7 days', 'Month'],
-                  selectedIndex: _periods.indexOf(vm.period),
-                  onChanged: (i) => vm.selectPeriod(_periods[i]),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          if (vm.error != null)
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('Could not load data', style: AppType.bodyStrong),
-                const SizedBox(height: AppSpacing.md),
-                AppButton(label: 'Try again', onPressed: () => vm.load()),
-              ],
-            )
-          else if (series == null)
-            const SizedBox(
-              height: 200,
-              child: Center(
-                child: CircularProgressIndicator(color: AppColors.primary),
-              ),
-            )
-          else ...[
-            Row(
-              children: [
-                Flexible(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.baseline,
-                    textBaseline: TextBaseline.alphabetic,
-                    children: [
-                      Text(
-                        formatReading(series.total),
-                        style: AppType.metricValue,
-                      ),
-                      const SizedBox(width: 6),
-                      Flexible(
-                        child: Text(
-                          _unit(vm.period),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: AppType.label,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: AppSpacing.sm),
-                DeltaChip(
-                  change: series.changeVsPrevious,
-                  suffix: comparisonLabel(vm.period),
-                ),
-              ],
-            ),
-            const SizedBox(height: AppSpacing.lg),
-            // Container(
-            //   height: 120,
-            //   alignment: Alignment.center,
-            //   decoration: BoxDecoration(
-            //     color: AppColors.mintTint,
-            //     borderRadius: BorderRadius.circular(AppRadius.small),
-            //   ),
-            //   child: const Text(
-            //     'Chart arrives in the next lesson',
-            //     style: AppType.caption,
-            //   ),
-            // ),
-            UsageLineChart(points: series.cumulativePoints),
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              left == null
-                  ? 'Cumulative usage'
-                  : 'Cumulative usage · ${formatReading(left)} L left '
-                        "in today's allowance",
-              style: AppType.caption,
-            ),
-          ],
-        ],
-      ),
+      captionBuilder: (s) {
+        final left = s.budgetRemaining;
+        return left == null
+            ? 'Cumulative usage'
+            : "Cumulative usage · ${formatReading(left)} L left in today's allowance";
+      },
     );
   }
 }

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:demo1/features/resources/data/models/energy_report.dart';
 import 'package:demo1/features/resources/data/models/usage_series.dart';
 import 'package:demo1/features/resources/data/models/water_report.dart';
+import 'package:demo1/features/resources/data/models/fertilizer_report.dart';
 import 'package:demo1/features/resources/data/repositories/resource_usage_repository.dart';
 import 'package:demo1/features/resources/presentation/viewmodels/energy_view_model.dart';
 import 'package:demo1/features/resources/presentation/viewmodels/period_report_view_model.dart';
@@ -36,6 +37,10 @@ class _StubRepository implements ResourceUsageRepository {
 
   @override
   Future<WaterReport> getWater(UsagePeriod period) =>
+      throw UnimplementedError('not used in these tests');
+
+  @override
+  Future<FertilizerReport> getFertillizer(UsagePeriod period) =>
       throw UnimplementedError('not used in these tests');
 }
 

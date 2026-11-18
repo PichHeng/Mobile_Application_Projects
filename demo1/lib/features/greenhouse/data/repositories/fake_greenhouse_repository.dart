@@ -1,5 +1,6 @@
 import 'package:demo1/features/greenhouse/data/mock/mock_energy.dart';
 import 'package:demo1/features/greenhouse/data/mock/mock_water.dart';
+import 'package:demo1/features/greenhouse/data/mock/mock_fertilizer.dart';
 import 'package:demo1/features/greenhouse/data/models/greenhouse_climate.dart';
 import 'package:demo1/features/greenhouse/data/models/overview_summary.dart';
 import 'package:demo1/features/greenhouse/data/repositories/greenhouse_repository.dart';
@@ -28,6 +29,10 @@ class FakeGreenhouseRepository implements GreenhouseRepository {
       0,
       (sum, v) => sum + v,
     );
+    final fertilizerToday = mockFertillizerTodayHourly.fold<double>(
+      0,
+      (sum, v) => sum + v,
+    );
 
     return OverviewSummary(
       zoneCount: 3,
@@ -37,7 +42,7 @@ class FakeGreenhouseRepository implements GreenhouseRepository {
             (energyToday - mockEnergyYesterday) / mockEnergyYesterday,
         waterLitres: waterToday,
         waterAllowanceUsed: waterToday / mockWaterAllowance,
-        fertilizerLitres: 1.8,
+        fertilizerLitres: fertilizerToday,
       ),
       health: const PlantHealthSummary(healthy: 114, watch: 8, attention: 2),
       roots: const RootsInsight(
