@@ -4,7 +4,6 @@ import 'package:demo1/core/constants/app_spacing.dart';
 import 'package:demo1/core/theme/app_type.dart';
 import 'package:demo1/core/utils/reading_format.dart';
 import 'package:demo1/core/widgets/section_header.dart';
-import 'package:demo1/features/resources/data/models/irrigation_schedule.dart';
 import 'package:demo1/features/resources/presentation/viewmodels/water_controls_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
