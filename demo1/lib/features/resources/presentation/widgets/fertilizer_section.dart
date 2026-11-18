@@ -10,6 +10,7 @@ import 'package:demo1/features/resources/presentation/viewmodels/fertilizer_view
 import 'package:demo1/features/resources/presentation/widgets/fertilizer_dosing_sections.dart';
 import 'package:demo1/features/resources/presentation/widgets/usage_card.dart';
 import 'package:demo1/features/resources/presentation/widgets/usage_line_chart.dart';
+import 'package:demo1/features/resources/presentation/widgets/fertilizer_outputs_section.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -29,7 +30,14 @@ class FertilizerSection extends StatelessWidget {
               DosingViewModel(ctx.read<DosingRepository>())..load(),
         ),
       ],
-      child: const Column(children: [_FertilizerUsageCard(), DosingSections()]),
+      child: const Column(
+        children: [
+          _FertilizerUsageCard(),
+          DosingSections(),
+          DosingOutputsSection(),
+          SeparationCard(),
+        ],
+      ),
     );
   }
 }

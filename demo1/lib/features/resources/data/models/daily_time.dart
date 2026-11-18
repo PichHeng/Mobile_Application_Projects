@@ -6,6 +6,11 @@ class DailyTime {
   final int hour;
   final int minute;
 
+  /// 9:05 -> "09:05"
+  String format() =>
+      '${hour.toString().padLeft(2, '0')}:'
+      '${minute.toString().padLeft(2, '0')}';
+
   /// លើកបន្ទាប់ដែលម៉ោងនេះមកដល់ (រៀងរាល់ថ្ងៃ)
   /// ស្មើពេលបច្ចុប្បន្នពិតប្រាកដ ចាត់ថាបានមកដល់ហើយ ដូច្នេះទៅថ្ងៃស្អែក
   DateTime nextOccurrence(DateTime now) {

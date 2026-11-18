@@ -64,9 +64,38 @@ class DosingLimits {
   bool isTankLow(DosingInputs inputs) => inputs.tankPercent < minTankPercent;
 }
 
+class DosingPump {
+  const DosingPump({
+    required this.id,
+    required this.title,
+    required this.code,
+    this.usedTodayLitres,
+    this.manualOnly = false,
+  });
+  final String id;
+  final String title;
+  final String code;
+
+  /// null សម្រាប់ pump ថែទាំ (flush) ដែលមិនដូសតាមរូបមន្ត
+  final double? usedTodayLitres;
+
+  /// pump ថែទាំ មិនអាចដំណើរការ Auto បាន
+  final bool manualOnly;
+}
+
 class DosingSnapshot {
-  const DosingSnapshot({required this.recipe, required this.inputs});
+  const DosingSnapshot({
+    required this.recipe,
+    required this.inputs,
+    this.pumps = const [],
+    this.mixingPauseSeconds = 60,
+    this.lastMix,
+  });
 
   final FertilizerRecipe recipe;
   final DosingInputs inputs;
+  final List<DosingPump> pumps;
+
+  final int mixingPauseSeconds;
+  final DailyTime? lastMix;
 }

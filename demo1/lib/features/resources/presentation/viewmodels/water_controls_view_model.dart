@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:demo1/core/utils/timed_run.dart';
 import 'package:demo1/features/resources/data/models/irrigation_schedule.dart';
 import 'package:demo1/features/resources/data/models/water_io.dart';
 import 'package:demo1/features/resources/data/models/water_report.dart';
@@ -14,25 +15,23 @@ class WaterControlsViewModel extends ChangeNotifier {
     this.testLimit = const Duration(minutes: 2),
     Timer Function(Duration, void Function())? scheduler,
     DateTime Function()? clock,
-  }) : _startTimer = scheduler ?? Timer.new,
+  }) : _run = TimedRun(limit: testLimit, scheduler: scheduler),
        _clock = clock ?? DateTime.now;
 
   final IrrigationRepository _repository;
-  final Timer Function(Duration, void Function()) _startTimer;
+  final TimedRun _run;
   final DateTime Function() _clock;
   final SafetyLimits limits;
   final Duration testLimit;
 
   IrrigationSnapshot? _snapshot;
   final Map<String, IrrigationMode> _modes = {};
-  bool _isRunning = false;
   bool _isLoading = true;
   ReportError? _error;
-  Timer? _timer;
   bool _disposed = false;
 
   bool get isLoading => _isLoading;
-  bool get isRunning => _isRunning;
+  bool get isRunning => _run.isRunning;
   ReportError? get error => _error;
   WaterInputs? get inputs => _snapshot?.inputs;
   List<OutputDef> get outputs => _snapshot?.outputs ?? const [];
@@ -45,7 +44,7 @@ class WaterControlsViewModel extends ChangeNotifier {
   IrrigationMode modeOf(String id) => _modes[id] ?? IrrigationMode.auto;
 
   /// បើកតែពេលតេស្តកំពុងដំណើរការ ហើយ output នោះជា Manual
-  bool isOn(String id) => _isRunning && modeOf(id) == IrrigationMode.manual;
+  bool isOn(String id) => isRunning && modeOf(id) == IrrigationMode.manual;
 
   List<SafetyBlock> get blockers {
     final i = inputs;
@@ -57,7 +56,7 @@ class WaterControlsViewModel extends ChangeNotifier {
 
   /// មិនអាចចាប់ផ្តើមបាន ប្រសិនបើមិនអាចបញ្ជាក់សុវត្ថិភាព (error ឬគ្មានទិន្នន័យ)
   bool get canStartTest =>
-      !_isRunning &&
+      !isRunning &&
       _error == null &&
       inputs != null &&
       blockers.isEmpty &&
@@ -70,11 +69,11 @@ class WaterControlsViewModel extends ChangeNotifier {
 
     try {
       _snapshot = await _repository.getSnapshot();
-      if (_isRunning && blockers.isNotEmpty) stopTest();
+      if (isRunning && blockers.isNotEmpty) stopTest();
     } catch (_) {
       _error = ReportError.network;
       // អានមិនបាន = មិនអាចបញ្ជាក់សុវត្ថិភាព ដូច្នេះឈប់
-      if (_isRunning) stopTest();
+      if (isRunning) stopTest();
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -82,23 +81,19 @@ class WaterControlsViewModel extends ChangeNotifier {
   }
 
   void setMode(String id, IrrigationMode mode) {
-    if (_isRunning) return;
+    if (isRunning) return;
     _modes[id] = mode;
     notifyListeners();
   }
 
   void startTest() {
     if (!canStartTest) return;
-    _isRunning = true;
-    _timer = _startTimer(testLimit, stopTest);
+    _run.start(stopTest);
     notifyListeners();
   }
 
   void stopTest() {
-    _timer?.cancel();
-    _timer = null;
-    if (!_isRunning) return;
-    _isRunning = false;
+    if (!_run.stop()) return;
     _modes.clear(); // ត្រឡប់ទៅ Auto
     notifyListeners();
   }
@@ -106,7 +101,7 @@ class WaterControlsViewModel extends ChangeNotifier {
   @override
   void dispose() {
     _disposed = true;
-    _timer?.cancel();
+    _run.dispose();
     super.dispose();
   }
 
