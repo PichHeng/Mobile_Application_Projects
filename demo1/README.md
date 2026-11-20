@@ -18,50 +18,21 @@ samples, guidance on mobile development, and a full API reference.
 
 
 
-sample structure :
-
-plant_tech/
-├── lib/
-│   ├── main.dart                  # ចំណុចចាប់ផ្តើម (ខ្លីបំផុត)
-│   ├── app.dart                   # MaterialApp, theme, router
-│   │
-│   ├── core/                      # របស់ដែលប្រើរួមគ្រប់ feature
-│   │   ├── constants/             # ទំហំ, string keys
-│   │   ├── theme/                 # AppTheme, typography
-│   │   ├── router/                # route ទាំងអស់
-│   │   ├── network/               # HTTP client, error handling
-│   │   ├── utils/                 # validators, helpers
-│   │   └── widgets/               # widget ប្រើឡើងវិញ (GlassTextField...)
-│   │
-│   ├── features/
-│   │   ├── auth/                  # ← feature ទី ១ (ពី design របស់អ្នក)
-│   │   │   ├── data/
-│   │   │   │   ├── models/        # UserModel (fromJson/toJson)
-│   │   │   │   ├── datasources/   # ទំនាក់ទំនង Firebase/API
-│   │   │   │   └── repositories/  # AuthRepository
-│   │   │   └── presentation/
-│   │   │       ├── viewmodels/    # LoginViewModel, SignUpViewModel
-│   │   │       ├── views/         # LoginView, SignUpView
-│   │   │       └── widgets/       # widget ពិសេសរបស់ auth
-│   │   │
-│   │   ├── plant/                 # (ថ្ងៃក្រោយ) បញ្ជីរុក្ខជាតិ
-│   │   ├── care_schedule/         # (ថ្ងៃក្រោយ) កាលវិភាគស្រោចទឹក ដាក់ជី
-│   │   ├── notification/          # (ថ្ងៃក្រោយ) ការរំលឹក
-│   │   └── profile/
-│   │
-│   └── l10n/                      # ភាសាខ្មែរ + អង់គ្លេស
-│
-├── assets/ (images, fonts, icons)
-└── test/                          # រចនាសម្ព័ន្ធដូច lib/
-
-
-
 
 ## 📱 Application UI Preview
 
-### 1. Sign Up Screen
+### 1. Sign Up Screen & Login Screen
+<p align="center">
+  <img src="docs/screenshots/signuppage.png"
+       width="280"
+       alt="PlantX Climate Screen"/>
+</p>
 
-![PlantX Sign Up Screen](docs/screenshots/signuppage.png)
+<p align="center">
+  <img src="docs/screenshots/login_page.png"
+       width="280"
+       alt="PlantX Climate Screen"/>
+</p>
 
 ### 2. Overview Screen
 
@@ -92,3 +63,32 @@ plant_tech/
        alt="PlantX Plants Screen"/>
 </p>
 
+
+
+### Some more feature ui
+
+<p align="center">
+  <img src="docs/screenshots/Water.png"
+       width="280"
+       alt="PlantX Plants Screen"/>
+</p>
+
+
+<p align="center">
+  <img src="docs/screenshots/Energy_by_week.png"
+       width="280"
+       alt="PlantX Plants Screen"/>
+</p>
+
+
+<p align="center">
+  <img src="docs/screenshots/Fertilizer_by_week.png"
+       width="280"
+       alt="PlantX Plants Screen"/>
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/Ambient_by_day.png"
+       width="280"
+       alt="PlantX Plants Screen"/>
+</p>
