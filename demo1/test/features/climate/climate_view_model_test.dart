@@ -1,8 +1,10 @@
 import 'package:demo1/features/climate/data/models/climate_trend.dart';
-import 'package:demo1/features/climate/repositories/climate_repository.dart';
+import 'package:demo1/features/climate/data/repositories/climate_repository.dart';
 import 'package:demo1/features/climate/presentation/viewmodels/climate_view_model.dart';
 import 'package:demo1/features/greenhouse/data/models/greenhouse_climate.dart';
 import 'package:demo1/features/resources/presentation/viewmodels/period_report_view_model.dart';
+import 'package:demo1/features/climate/data/models/climate_series.dart';
+import 'package:demo1/features/resources/data/models/usage_series.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class _Repository implements ClimateRepository {
@@ -24,6 +26,10 @@ class _Repository implements ClimateRepository {
       ],
     );
   }
+
+  @override
+  Future<ClimateSeries> getSeries(ClimateMetric metric, UsagePeriod period) =>
+      throw UnimplementedError('not used in these test');
 }
 
 void main() {

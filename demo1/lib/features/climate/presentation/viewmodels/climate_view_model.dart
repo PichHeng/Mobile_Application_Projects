@@ -1,5 +1,5 @@
 import 'package:demo1/features/climate/data/models/climate_trend.dart';
-import 'package:demo1/features/climate/repositories/climate_repository.dart';
+import 'package:demo1/features/climate/data/repositories/climate_repository.dart';
 import 'package:demo1/features/resources/presentation/viewmodels/period_report_view_model.dart';
 import 'package:flutter/foundation.dart';
 

@@ -5,12 +5,17 @@ import 'package:demo1/core/utils/reading_format.dart';
 import 'package:demo1/core/widgets/app_button.dart';
 import 'package:demo1/core/widgets/readings_footer.dart';
 import 'package:demo1/core/widgets/screen_top_bar.dart';
+import 'package:demo1/core/widgets/section_header.dart';
 import 'package:demo1/core/widgets/status_chip.dart';
 import 'package:demo1/core/widgets/trend_card.dart';
 import 'package:demo1/features/climate/data/models/climate_trend.dart';
-import 'package:demo1/features/climate/repositories/climate_repository.dart';
+import 'package:demo1/features/climate/data/repositories/climate_repository.dart';
 import 'package:demo1/features/climate/presentation/climate_labels.dart';
+import 'package:demo1/features/climate/presentation/viewmodels/climate_chart_view_model.dart';
 import 'package:demo1/features/climate/presentation/viewmodels/climate_view_model.dart';
+import 'package:demo1/features/climate/presentation/widgets/breathe_banner.dart';
+import 'package:demo1/features/climate/presentation/widgets/closer_look_section.dart';
+import 'package:demo1/features/climate/presentation/widgets/zone_table.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,8 +24,17 @@ class ClimateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (ctx) => ClimateViewModel(ctx.read<ClimateRepository>())..load(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (ctx) =>
+              ClimateViewModel(ctx.read<ClimateRepository>())..load(),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) =>
+              ClimateChartViewModel(ctx.read<ClimateRepository>())..load(),
+        ),
+      ],
       child: const _ClimateBody(),
     );
   }
@@ -55,7 +69,16 @@ class _ClimateBody extends StatelessWidget {
                   _TrendGrid(today: today),
                   const SizedBox(height: AppSpacing.sm),
                   Text(trendsCaption(today), style: AppType.caption),
-                  // TODO មេរៀនទី ២២: A closer look, តារាង zone, banner
+                  const SizedBox(height: AppSpacing.xl),
+                  const CloserLookSection(),
+                  if (today.zones.isNotEmpty) ...[
+                    const SizedBox(height: AppSpacing.xl),
+                    const SectionHeader(title: 'Across the greenhouse'),
+                    const SizedBox(height: AppSpacing.md),
+                    ZoneTable(today: today),
+                  ],
+                  const SizedBox(height: AppSpacing.lg),
+                  BreatheBanner(today: today),
                   const SizedBox(height: AppSpacing.xl),
                   ReadingsFooter(time: vm.now),
                   const SizedBox(height: AppSpacing.md),

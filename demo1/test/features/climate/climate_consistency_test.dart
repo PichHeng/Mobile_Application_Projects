@@ -1,5 +1,5 @@
 import 'package:demo1/features/climate/data/models/climate_trend.dart';
-import 'package:demo1/features/climate/repositories/fake_climate_repository.dart';
+import 'package:demo1/features/climate/data/repositories/fake_climate_repository.dart';
 import 'package:demo1/features/greenhouse/data/repositories/fake_greenhouse_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 

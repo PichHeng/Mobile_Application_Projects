@@ -4,12 +4,12 @@ import 'package:flutter/foundation.dart';
 enum ReportError { network }
 
 /// ViewModel ទូទៅសម្រាប់ទំព័រណាដែលមាន Today / 7 days / Month
-/// T ជាប្រភេទរបាយការណ៍ (EnergyReport, WaterReport...)
-
+/// T ជាប្រភេទទិន្នន័យ (EnergyReport, WaterReport, ClimateSeries...)
 class PeriodReportViewModel<T> extends ChangeNotifier {
-  PeriodReportViewModel(this._fetch);
+  PeriodReportViewModel([Future<T> Function(UsagePeriod period)? fetch])
+    : _fetch = fetch;
 
-  final Future<T> Function(UsagePeriod period) _fetch;
+  final Future<T> Function(UsagePeriod period)? _fetch;
 
   UsagePeriod _period = UsagePeriod.today;
   T? _data;
@@ -23,11 +23,27 @@ class PeriodReportViewModel<T> extends ChangeNotifier {
   bool get isLoading => _isLoading;
   ReportError? get error => _error;
 
+  /// subclass អាច override ដើម្បីប្រើស្ថានភាពបន្ថែម (ឧ. metric)
+  @protected
+  Future<T> fetch(UsagePeriod period) {
+    final f = _fetch;
+    if (f == null) {
+      throw UnimplementedError('Pass a fetch function or override fetch()');
+    }
+    return f(period);
+  }
+
+  /// លុបទិន្នន័យចាស់ ហើយផ្ទុកថ្មី
+  @protected
+  Future<void> refresh() async {
+    _data = null;
+    await load();
+  }
+
   Future<void> selectPeriod(UsagePeriod period) async {
     if (period == _period && _error == null) return;
     _period = period;
-    _data = null;
-    await load();
+    await refresh();
   }
 
   Future<void> load() async {
@@ -37,7 +53,7 @@ class PeriodReportViewModel<T> extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final result = await _fetch(_period);
+      final result = await fetch(_period);
       if (requestId != _requestId) return;
       _data = result;
     } catch (_) {
