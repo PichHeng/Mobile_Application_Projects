@@ -11,6 +11,8 @@ import 'package:demo1/features/resources/data/repositories/fake_irrigation_repos
 import 'package:demo1/features/resources/data/repositories/irrigation_repository.dart';
 import 'package:demo1/features/resources/data/repositories/dosing_repository.dart';
 import 'package:demo1/features/resources/data/repositories/fake_dosing_repository.dart';
+import 'package:demo1/features/climate/repositories/climate_repository.dart';
+import 'package:demo1/features/climate/repositories/fake_climate_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -56,6 +58,7 @@ class _AppState extends State<App> {
           create: (_) => FakeIrrigationRepository(),
         ),
         Provider<DosingRepository>(create: (_) => FakeDosingRepository()),
+        Provider<ClimateRepository>(create: (_) => FakeClimateRepository()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

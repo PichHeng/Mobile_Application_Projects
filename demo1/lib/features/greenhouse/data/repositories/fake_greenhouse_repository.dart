@@ -4,16 +4,17 @@ import 'package:demo1/features/greenhouse/data/mock/mock_fertilizer.dart';
 import 'package:demo1/features/greenhouse/data/models/greenhouse_climate.dart';
 import 'package:demo1/features/greenhouse/data/models/overview_summary.dart';
 import 'package:demo1/features/greenhouse/data/repositories/greenhouse_repository.dart';
+import 'package:demo1/features/greenhouse/data/mock/mock_climate.dart';
 
 class FakeGreenhouseRepository implements GreenhouseRepository {
   @override
   Future<GreenhouseClimate> getClimate() async {
     await Future.delayed(const Duration(milliseconds: 600));
     return const GreenhouseClimate(
-      temperature: RangedReading(value: 24.6, min: 22, max: 26),
-      humidity: RangedReading(value: 68, min: 60, max: 75),
-      light: RangedReading(value: 420, min: 350, max: 500),
-      co2: RangedReading(value: 812, min: 700, max: 1000),
+      temperature: mockTemperature,
+      humidity: mockHumidity,
+      light: mockLight,
+      co2: mockCo2,
     );
   }
 

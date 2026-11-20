@@ -1,8 +1,7 @@
-import 'package:demo1/core/constants/app_colors.dart';
-import 'package:demo1/core/constants/app_radius.dart';
 import 'package:demo1/core/constants/app_spacing.dart';
 import 'package:demo1/core/theme/app_type.dart';
 import 'package:demo1/core/widgets/pill_tabs.dart';
+import 'package:demo1/core/widgets/screen_top_bar.dart';
 import 'package:demo1/features/resources/presentation/resource_type.dart';
 import 'package:demo1/features/resources/presentation/widgets/energy_section.dart';
 import 'package:demo1/features/resources/presentation/widgets/fertilizer_section.dart';
@@ -34,7 +33,7 @@ class ResourcesView extends StatelessWidget {
         child: ListView(
           padding: const EdgeInsets.all(AppSpacing.screenPadding),
           children: [
-            const _TopRow(),
+            const ScreenTopBar(),
             const SizedBox(height: AppSpacing.md),
             Text(_title, style: AppType.headline),
             const SizedBox(height: AppSpacing.xs),
@@ -56,41 +55,6 @@ class ResourcesView extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class _TopRow extends StatelessWidget {
-  const _TopRow();
-
-  void _back(BuildContext context) {
-    if (context.canPop()) {
-      context.pop();
-    } else {
-      context.go('/overview');
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        IconButton(
-          tooltip: 'Back',
-          onPressed: () => _back(context),
-          icon: const Icon(Icons.arrow_back, color: AppColors.forestInk),
-        ),
-        const Text('Greenhouse 01', style: AppType.body),
-        const Spacer(),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-          decoration: BoxDecoration(
-            color: AppColors.mintTint,
-            borderRadius: BorderRadius.circular(AppRadius.full),
-          ),
-          child: const Text('DEMO', style: AppType.chip),
-        ),
-      ],
     );
   }
 }
